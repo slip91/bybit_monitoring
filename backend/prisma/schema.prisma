@@ -1,0 +1,172 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Bot {
+  botPk               Int           @id @default(autoincrement()) @map("bot_pk")
+  bybitBotId          String?       @map("bybit_bot_id")
+  guessedKey          String?       @map("guessed_key")
+  identityStatus      String        @map("identity_status")
+  inferenceConfidence Float?        @map("inference_confidence")
+  inferenceReason     String?       @map("inference_reason")
+  symbol              String?
+  botType             String        @map("bot_type")
+  status              String?
+  route               String?
+  source              String
+  isActive            Boolean       @map("is_active")
+  firstSeenAt         DateTime      @map("first_seen_at")
+  lastSeenAt          DateTime      @map("last_seen_at")
+  confirmedAt         DateTime?     @map("confirmed_at")
+  lastSnapshotAt      DateTime?     @map("last_snapshot_at")
+  notes               String?
+  rawMetadataJson     String?       @map("raw_metadata_json")
+  createdAt           DateTime      @map("created_at")
+  updatedAt           DateTime      @map("updated_at")
+  snapshots           BotSnapshot[]
+  alerts              Alert[]
+  planBots            PlanBot[]
+  closedBotRuns       ClosedBotRun[]
+
+  @@map("bots")
+}
+
+model BotSnapshot {
+  snapshotId        Int       @id @default(autoincrement()) @map("snapshot_id")
+  botPk             Int       @map("bot_pk")
+  source            String
+  snapshotTime      DateTime  @map("snapshot_time")
+  symbol            String?
+  botType           String?   @map("bot_type")
+  status            String?
+  equity            Float?
+  totalPnl          Float?    @map("total_pnl")
+  totalApr          Float?    @map("total_apr")
+  gridApr           Float?    @map("grid_apr")
+  gridProfit        Float?    @map("grid_profit")
+  activityCount     Int?      @map("activity_count")
+  investment        Float?
+  realizedPnl       Float?    @map("realized_pnl")
+  unrealizedPnl     Float?    @map("unrealized_pnl")
+  fundingFees       Float?    @map("funding_fees")
+  liquidationPrice  Float?    @map("liquidation_price")
+  totalOrderBalance Float?    @map("total_order_balance")
+  availableBalance  Float?    @map("available_balance")
+  positionBalance   Float?    @map("position_balance")
+  createTime        DateTime? @map("create_time")
+  operationTimeMs   Int?      @map("operation_time_ms")
+  modifyTime        DateTime? @map("modify_time")
+  endTime           DateTime? @map("end_time")
+  rawPayloadJson    String?   @map("raw_payload_json")
+  createdAt         DateTime  @map("created_at")
+  bot               Bot       @relation(fields: [botPk], references: [botPk], onDelete: Cascade)
+
+  @@map("bot_snapshots")
+}
+
+model Alert {
+  alertPk            Int       @id @default(autoincrement()) @map("alert_pk")
+  botPk              Int?      @map("bot_pk")
+  snapshotId         Int?      @map("snapshot_id")
+  orderPk            Int?      @map("order_pk")
+  executionPk        Int?      @map("execution_pk")
+  alertType          String    @map("alert_type")
+  severity           String
+  status             String
+  title              String
+  message            String?
+  metricName         String?   @map("metric_name")
+  metricValue        Float?    @map("metric_value")
+  thresholdValue     Float?    @map("threshold_value")
+  comparisonOperator String?   @map("comparison_operator")
+  dedupeKey          String?   @map("dedupe_key")
+  source             String
+  alertTime          DateTime  @map("alert_time")
+  acknowledgedAt     DateTime? @map("acknowledged_at")
+  resolvedAt         DateTime? @map("resolved_at")
+  rawPayloadJson     String?   @map("raw_payload_json")
+  createdAt          DateTime  @map("created_at")
+  bot                Bot?      @relation(fields: [botPk], references: [botPk], onDelete: SetNull)
+
+  @@map("alerts")
+}
+
+model ServiceStatus {
+  serviceName           String    @id @map("service_name")
+  status                String
+  lastStartedAt         DateTime? @map("last_started_at")
+  lastFinishedAt        DateTime? @map("last_finished_at")
+  lastSuccessAt         DateTime? @map("last_success_at")
+  lastErrorAt           DateTime? @map("last_error_at")
+  lastErrorMessage      String?   @map("last_error_message")
+  lastSnapshotTime      DateTime? @map("last_snapshot_time")
+  lastActiveBots        Int?      @map("last_active_bots")
+  lastSnapshotsInserted Int?      @map("last_snapshots_inserted")
+  updatedAt             DateTime  @map("updated_at")
+
+  @@map("service_status")
+}
+
+model Plan {
+  planPk            Int       @id @default(autoincrement()) @map("plan_pk")
+  title             String
+  targetDailyPnlUsd Float     @map("target_daily_pnl_usd")
+  status            String
+  notes             String?
+  isCurrent         Boolean   @map("is_current")
+  createdAt         DateTime  @map("created_at")
+  updatedAt         DateTime  @map("updated_at")
+  planBots          PlanBot[]
+
+  @@map("plans")
+}
+
+model PlanBot {
+  planBotPk  Int      @id @default(autoincrement()) @map("plan_bot_pk")
+  planPk     Int      @map("plan_pk")
+  botPk      Int      @map("bot_pk")
+  isIncluded Boolean  @map("is_included")
+  weight     Float
+  createdAt  DateTime @map("created_at")
+  updatedAt  DateTime @map("updated_at")
+  plan       Plan     @relation(fields: [planPk], references: [planPk], onDelete: Cascade)
+  bot        Bot      @relation(fields: [botPk], references: [botPk], onDelete: Cascade)
+
+  @@unique([planPk, botPk])
+  @@map("plan_bots")
+}
+
+model ClosedBotRun {
+  closedRunPk      Int       @id @default(autoincrement()) @map("closed_run_pk")
+  legacyBotId      String    @map("legacy_bot_id")
+  botPk            Int?      @map("bot_pk")
+  symbol           String?
+  botType          String    @map("bot_type")
+  strategyTag      String?   @map("strategy_tag")
+  closeReason      String?   @map("close_reason")
+  closeReasonDetail String?  @map("close_reason_detail")
+  startedAt        DateTime? @map("started_at")
+  closedAt         DateTime? @map("closed_at")
+  firstObservedAt  DateTime? @map("first_observed_at")
+  lastObservedAt   DateTime? @map("last_observed_at")
+  snapshotCount    Int       @map("snapshot_count")
+  investment       Float?
+  realizedPnl      Float?    @map("realized_pnl")
+  unrealizedPnl    Float?    @map("unrealized_pnl")
+  totalPnl         Float?    @map("total_pnl")
+  equityAtClose    Float?    @map("equity_at_close")
+  lifetimeDays     Float?    @map("lifetime_days")
+  source           String
+  rawMetadataJson  String?   @map("raw_metadata_json")
+  createdAt        DateTime  @map("created_at")
+  updatedAt        DateTime  @map("updated_at")
+  bot              Bot?      @relation(fields: [botPk], references: [botPk], onDelete: SetNull)
+
+  @@unique([legacyBotId])
+  @@map("closed_bot_runs")
+}

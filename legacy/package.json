@@ -1,0 +1,23 @@
+{
+  "name": "bybit-bots-legacy",
+  "version": "1.0.0",
+  "description": "Рабочая папка:",
+  "main": "bin/api_server.js",
+  "directories": {
+    "lib": "src"
+  },
+  "scripts": {
+    "refresh": "node ./bin/refresh_bybit_bots.js",
+    "report": "node ./bin/report_active_bots.js",
+    "snapshot": "node ./bin/snapshot_active_bots.js",
+    "snapshot:service": "node ./bin/snapshot_active_bots_service.js",
+    "api": "node ./bin/api_server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "better-sqlite3": "^12.8.0"
+  }
+}

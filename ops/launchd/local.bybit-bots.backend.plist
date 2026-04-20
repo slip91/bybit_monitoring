@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>local.bybit-bots.backend</string>
+
+    <key>ProgramArguments</key>
+    <array>
+      <string>/bin/zsh</string>
+      <string>-lc</string>
+      <string>export HOME=/Users/ovz; export NVM_DIR=/Users/ovz/.nvm; export PATH=/Users/ovz/.nvm/versions/node/v24.13.0/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin; if [ -s "$NVM_DIR/nvm.sh" ]; then . "$NVM_DIR/nvm.sh"; fi; cd /Users/ovz/Documents/project/bybit-bots/backend; exec npm run start</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/ovz/Documents/project/bybit-bots/backend</string>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>KeepAlive</key>
+    <true/>
+
+    <key>ThrottleInterval</key>
+    <integer>10</integer>
+
+    <key>StandardOutPath</key>
+    <string>/Users/ovz/Documents/project/bybit-bots/db/tmp/launchd-backend.stdout.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/ovz/Documents/project/bybit-bots/db/tmp/launchd-backend.stderr.log</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+      <key>HOME</key>
+      <string>/Users/ovz</string>
+      <key>PATH</key>
+      <string>/Users/ovz/.nvm/versions/node/v24.13.0/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    </dict>
+  </dict>
+</plist>

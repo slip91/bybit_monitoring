@@ -1,0 +1,62 @@
+# Dependencies
+node_modules/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Database files
+db/*.sqlite
+db/*.sqlite-wal
+db/*.sqlite-shm
+db/tmp/
+
+# Logs
+*.log
+logs/
+
+# Build output
+dist/
+build/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Test artifacts
+web/playwright-report/
+web/test-results/
+
+# Misc
+.qwen/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Build artifacts
+*.log
+*.pid
+*.seed
+*.pid.lock
+
+# Temporary files
+tmp/
+temp/
