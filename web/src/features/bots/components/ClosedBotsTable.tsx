@@ -11,7 +11,9 @@ type Props = {
   onExclusionReasonChange: (runPk: number, reason: ExclusionReason) => void;
 };
 
-export function ClosedBotsTable({ history, busyRunPk, exclusionDrafts, error, onToggleExclusion, onExclusionReasonChange }: Props) {
+export function ClosedBotsTable({
+  history, busyRunPk, exclusionDrafts, error, onToggleExclusion, onExclusionReasonChange,
+}: Props) {
   return (
     <section className={cn(ui.panel(), "p-6")}>
       <div className={ui.sectionHeader()}>

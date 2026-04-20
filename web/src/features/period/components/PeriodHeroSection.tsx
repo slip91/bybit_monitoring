@@ -30,7 +30,9 @@ type Props = {
   onCompositionChange: (key: CompositionKey) => void;
 };
 
-export function PeriodHeroSection({ summary, windowKey, composition, visibleItemsCount, onWindowChange, onCompositionChange }: Props) {
+export function PeriodHeroSection({
+  summary, windowKey, composition, visibleItemsCount, onWindowChange, onCompositionChange,
+}: Props) {
   return (
     <section className={cn(ui.panel({ tone: "hero" }), "px-8 py-8")}>
       <p className={ui.eyebrow()}>Период</p>

@@ -38,7 +38,10 @@ export function BotMarketChart({ data, totalPnl, gridProfit }: BotMarketChartPro
 
     let disposed = false;
     let cleanupResize = () => {};
-    let chartApi: { remove: () => void; applyOptions: (options: { width: number; height: number }) => void } | null = null;
+    let chartApi: {
+    remove: () => void;
+    applyOptions: (options: { width: number; height: number }) => void;
+  } | null = null;
 
     void import("lightweight-charts")
       .then((mod) => {

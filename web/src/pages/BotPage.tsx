@@ -241,7 +241,9 @@ function labelOf<T extends { value: string; label: string }>(options: readonly T
   return options.find((o) => o.value === value)?.label ?? value;
 }
 
-function sumRecentActivityDeltas<T extends { snapshotTime: string }>(snapshots: T[], deltas: Array<number | null>, hours: number) {
+function sumRecentActivityDeltas<T extends { snapshotTime: string }>(
+  snapshots: T[], deltas: Array<number | null>, hours: number,
+) {
   const latest = snapshots[snapshots.length - 1]?.snapshotTime;
   if (!latest) return null;
   const latestTs = new Date(latest).getTime();

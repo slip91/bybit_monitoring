@@ -214,6 +214,8 @@ export function formatExclusionState(isExcluded: boolean, reason: string | null)
   return reason ? `Исключен · ${exclusionReasonLabel(reason)}` : "Исключен";
 }
 
-export function exclusionReasonDraft(reason: string | null | undefined, drafts: Record<string, string>, key: string): string {
+export function exclusionReasonDraft(
+  reason: string | null | undefined, drafts: Record<string, string>, key: string,
+): string {
   return drafts[key] || reason || "manual_ignore";
 }
