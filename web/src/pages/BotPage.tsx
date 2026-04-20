@@ -154,7 +154,7 @@ export function BotPage() {
             footnote={
               <>
                 <span>Сколько grid_profit добавилось с 00:00 текущего дня</span>
-                <span className={cn("font-medium", factVsRuntimeToneClass(factTodayVsRuntime))} title="Процент от По runtime/день">
+                <span className={cn("font-medium", factVsRuntimeToneClass(factTodayVsRuntime))} title="Процент от По runtime/день" aria-label="Процент от По runtime/день">
                   {formatPercent(factTodayVsRuntime, 0)}
                 </span>
               </>

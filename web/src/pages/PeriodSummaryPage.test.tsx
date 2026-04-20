@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { PeriodSummaryPage } from "@pages/PeriodSummaryPage";
@@ -101,7 +102,7 @@ describe("PeriodSummaryPage", () => {
   });
 
   it("renders period summary selectors and metrics", async () => {
-    render(<PeriodSummaryPage />);
+    render(<MemoryRouter><PeriodSummaryPage /></MemoryRouter>);
 
     expect(await screen.findByRole("heading", { name: "Общая статистика за период" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /1 день/i })).toBeInTheDocument();
