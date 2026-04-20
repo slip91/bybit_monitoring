@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
 
-import { AlertsPanel } from "../features/dashboard/components/AlertsPanel";
+import { AlertsPanel } from "@features/dashboard/components/AlertsPanel";
 import {
   acknowledgeAlert,
   getAlerts,
@@ -13,11 +13,11 @@ import {
   updateBotGridProfitCaptureRule,
   updateBotTotalPnlRule,
   updateTelegramAlertSettings,
-} from "../lib/api";
-import { toErrorMessage } from "../lib/format";
-import type { AlertItem, BotAlertRule, ServiceStatus, TelegramAlertSettings } from "../lib/types";
-import { cn, ui } from "../lib/ui";
-import { ServiceStatusCard, TelegramSettingsForm, AlertRulesTable } from "../features/alerts/components";
+} from "@lib/api";
+import { toErrorMessage } from "@lib/format";
+import type { AlertItem, BotAlertRule, ServiceStatus, TelegramAlertSettings } from "@lib/types";
+import { cn, ui } from "@lib/ui";
+import { ServiceStatusCard, TelegramSettingsForm, AlertRulesTable } from "@features/alerts/components";
 
 /**
  * Страница настроек алертов и Telegram уведомлений

@@ -1,6 +1,6 @@
-import type { PlanParticipant } from '../../../lib/types';
+import type { PlanParticipant } from '@lib/types';
 import { ParticipantRow } from './ParticipantRow';
-import { cn, ui } from '../../../lib/ui';
+import { cn, ui } from '@lib/ui';
 
 type ParticipantsTableProps = {
   title: string;

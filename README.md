@@ -1,132 +1,70 @@
-# Bybit Bots
+# bybit-bots
 
-## Структура
+Личный трекер фьючерсных грид-ботов [Bybit](https://bybit.com) — локальный дашборд, история снапшотов, алерты и планирование дохода.
 
-```text
+---
+
+## Скриншоты
+
+![Дашборд](docs/screenshots/dashboard.png)
+
+![План дохода](docs/screenshots/plan.png)
+
+![Статистика за период](docs/screenshots/period.png)
+
+![Закрытые боты](docs/screenshots/closed-bots.png)
+
+![Алерты и Telegram](docs/screenshots/alerts.png)
+
+![Статус сервиса](docs/screenshots/service.png)
+
+![Telegram-уведомления](docs/screenshots/telegram-alerts.png)
+
+---
+
+## Стек
+
+| Слой | Технологии |
+|---|---|
+| Backend | NestJS 11 · Prisma 6 · TypeScript 5 · Winston |
+| Frontend | React 18 · Vite 5 · Tailwind CSS 4 · Chart.js · Lightweight Charts |
+| База данных | SQLite (через Prisma + better-sqlite3) |
+| Автозапуск | macOS launchd |
+| Качество кода | ESLint · TypeScript strict |
+
+---
+
+## Возможности
+
+- **Инвентарь ботов** — отслеживает все известные фьючерсные грид-боты Bybit по `bot_id`
+- **История снапшотов** — снапшоты каждые 5 минут; дедупликация для завершённых ботов
+- **Дашборд** — сводка по активным ботам: PnL, APR, grid APR
+- **Алерты** — настраиваемые правила по total PnL на бота; подтверждение / подавление
+- **План дохода** — оценка текущего дня + статистика за периоды (1д / 7д / 30д / 90д) с проверкой покрытия
+- **Telegram-уведомления** — push-уведомления при каждой сделке бота: символ и плечо, прибыль за день, delta grid PnL с цветовым индикатором (🟢/🔴), количество сделок, текущий grid PnL, баланс и total PnL. Настраивается через интерфейс.
+- **Swagger UI** — автогенерируемая документация API по адресу `/api-docs`
+
+---
+
+## Архитектура
+
+```
 bybit-bots/
-├── README.md
-├── backend
-├── db
-│   ├── bybit-bots.sqlite
-│   ├── sql
-│   │   └── init_bot_warehouse.sql
-│   └── tmp
-├── legacy
-│   ├── api_server.js
-│   ├── lib
-│   ├── node_modules
-│   └── package.json
-├── scripts
-│   ├── api_server_legacy.js
-│   ├── refresh_bybit_bots.js
-│   ├── report_active_bots.js
-│   ├── snapshot_active_bots.js
-│   └── snapshot_active_bots_service.js
-└── web
+├── backend/          # NestJS + Prisma API (порт 3100)
+├── web/              # React + Vite фронтенд (порт 5173)
+├── legacy/           # Оригинальный Node.js runtime (bridge-слой)
+├── scripts/          # CLI-скрипты: refresh, snapshot, report
+├── db/               # SQLite база + SQL-схема
+└── ops/launchd/      # macOS autostart plist
 ```
 
-## Что хранится
+Основной API — NestJS backend. Слой `legacy/` сохранён как bridge на время миграции.
 
-- `bot_inventory`
-  - все найденные боты
-  - для активных ботов хранятся только `bot_id`, `symbol`, `bot_type`, `route`, `status`, `source`, `discovered_at`
-- `completed_fgrid_stats_history`
-  - история снапшотов только для завершенных `futures grid` ботов
-  - новый снапшот пишется только если данные изменились
+---
 
-## Как запускать
+## Быстрый старт
 
-Обычное обновление по текущему inventory в базе:
-
-```bash
-node scripts/refresh_bybit_bots.js --api-only
-```
-
-Обновление с JSON-отчетом:
-
-```bash
-node scripts/refresh_bybit_bots.js --json --api-only
-```
-
-Отчет по активным ботам из локальной базы, включая `total_apr` и `grid_apr`:
-
-```bash
-node scripts/report_active_bots.js
-```
-
-JSON-отчет по активным ботам:
-
-```bash
-node scripts/report_active_bots.js --json
-```
-
-Сохранить snapshot активных ботов в таблицы `bots` и `bot_snapshots`:
-
-```bash
-node scripts/snapshot_active_bots.js
-```
-
-JSON-отчет по snapshot-запуску:
-
-```bash
-node scripts/snapshot_active_bots.js --json
-```
-
-Legacy локальный сервис, который делает snapshot активных ботов раз в 5 минут:
-
-```bash
-node scripts/snapshot_active_bots_service.js
-```
-
-Сейчас основной polling перенесен внутрь `Nest` backend и запускается вместе с `backend/`.
-
-Read-only HTTP API поверх SQLite:
-
-```bash
-node scripts/api_server_legacy.js
-```
-
-По умолчанию API слушает `127.0.0.1:3000`.
-
-## LM Studio helper
-
-Для изолированных AI-подзадач можно использовать тонкий runner без встраивания в backend:
-
-```bash
-node scripts/lm_studio_task.js --show-models
-```
-
-Быстрый вызов с prompt:
-
-```bash
-node scripts/lm_studio_task.js \
-  --model qwen/qwen3.5-9b \
-  --prompt "Кратко суммаризируй состояние backend по этим логам: ..."
-```
-
-Через stdin:
-
-```bash
-tail -n 200 db/tmp/launchd-backend.stderr.log | \
-node scripts/lm_studio_task.js \
-  --system "Ты помощник по локальной диагностике Node/NestJS. Верни краткий список проблем."
-```
-
-Поддерживаемые переменные окружения:
-
-- `LM_STUDIO_BASE_URL` — например `http://127.0.0.1:1234/v1`
-- `LM_STUDIO_API_KEY` — если твой endpoint требует ключ
-- `LLM_MODEL` — дефолтный model id
-
-Если `message.content` пустой, скрипт автоматически проверяет `message.reasoning_content`, что полезно для некоторых reasoning-моделей в LM Studio.
-
-## Новый Backend
-
-Параллельно добавлен новый backend на `NestJS + Prisma` в `backend/`.
-
-Это переходный слой рядом с legacy runtime в `legacy/`, чтобы можно было мигрировать без ломки текущего UI.
-
-Быстрый старт:
+**Backend**
 
 ```bash
 cd backend
@@ -135,157 +73,132 @@ npm run prisma:generate
 npm run start
 ```
 
-По умолчанию новый backend слушает `127.0.0.1:3100`.
+Слушает на `127.0.0.1:3100`.
 
-По умолчанию вместе с `backend/` стартует встроенный polling snapshot-цикла:
-
-- `SNAPSHOT_POLLING_ENABLED=true`
-- `SNAPSHOT_POLLING_INTERVAL_MS=300000`
-
-Отключить встроенный polling можно через:
-
-```bash
-cd backend
-SNAPSHOT_POLLING_ENABLED=false npm run start
-```
-
-Сейчас `backend/` уже обслуживает те же endpoint'ы, что нужны текущему UI:
-
-- `GET /health`
-- `GET /service/status`
-- `GET /bots`
-- `GET /bots/:id`
-- `GET /bots/:id/snapshots`
-- `GET /dashboard/summary`
-- `GET /alerts`
-- `PUT /alerts/:id/acknowledge`
-- `PUT /alerts/:id/suppress`
-- `GET /settings/telegram-alerts`
-- `PUT /settings/telegram-alerts`
-- `GET /settings/alert-rules`
-- `PUT /settings/alert-rules/:botId/total-pnl`
-- `GET /plans/current`
-- `PUT /plans/current`
-- `PUT /plans/current/bots/:botId`
-
-Пока это migration-friendly слой: Nest дает новую структуру приложения, а часть бизнес-логики и DTO временно переиспользуется через bridge из текущего `lib/`, чтобы не ломать фронт во время переноса.
-
-Переопределить host/port можно через:
-
-- `BOT_API_HOST`
-- `BOT_API_PORT`
-
-## HTTP API
-
-- `GET /bots`
-- `GET /bots/:id`
-- `GET /bots/:id/snapshots`
-- `GET /dashboard/summary`
-- `GET /alerts`
-- `GET /health`
-- `GET /metrics`
-
-## Frontend
-
-React + Vite приложение лежит в `web/`.
-
-Установка зависимостей:
+**Frontend**
 
 ```bash
 cd web
 npm install
-```
-
-Запуск dev-сервера:
-
-```bash
-cd web
 npm run dev
 ```
 
-По умолчанию frontend использует `/api` и проксирует запросы в `http://127.0.0.1:3100`.
+Слушает на `127.0.0.1:5173`, проксирует `/api` → backend.
 
-Если нужно временно вернуться на старый API, можно переопределить:
+---
+
+## Разработка
 
 ```bash
-cd web
-VITE_API_PROXY_TARGET=http://127.0.0.1:3000 npm run dev
+# Проверка типов
+cd web && npx tsc --noEmit
+
+# Линтер
+cd web && npm run lint
+
+# Тесты
+cd web && npm run test
+
+# Сборка
+cd web && npm run build
 ```
 
-## launchd автозапуск backend
+---
 
-Для автозапуска Nest backend с polling подготовлены файлы:
+## Переменные окружения
 
-- plist: `ops/launchd/local.bybit-bots.backend.plist`
-- fallback wrapper: `scripts/start_backend_launchd.sh`
+| Переменная | Описание |
+|---|---|
+| `BYBIT_API_KEY` | API-ключ Bybit |
+| `BYBIT_API_SECRET` | API-секрет Bybit |
+| `BYBIT_ENV` | `mainnet` или `testnet` |
+| `BOT_API_HOST` | Хост backend (по умолчанию `127.0.0.1`) |
+| `BOT_API_PORT` | Порт backend (по умолчанию `3100`) |
+| `SNAPSHOT_POLLING_ENABLED` | Включить встроенный polling (по умолчанию `true`) |
+| `SNAPSHOT_POLLING_INTERVAL_MS` | Интервал polling в мс (по умолчанию `300000`) |
 
-Логи пишутся в `db/tmp/`:
+Значения также подхватываются из `~/.zshrc`, если не заданы в окружении.
 
-- `db/tmp/launchd-backend.stdout.log`
-- `db/tmp/launchd-backend.stderr.log`
+---
 
-Полезные команды:
+## API
+
+```
+GET  /health
+GET  /service/status
+GET  /bots
+GET  /bots/:id
+GET  /bots/:id/snapshots
+GET  /dashboard/summary
+GET  /alerts
+PUT  /alerts/:id/acknowledge
+PUT  /alerts/:id/suppress
+GET  /settings/telegram-alerts
+PUT  /settings/telegram-alerts
+GET  /settings/alert-rules
+PUT  /settings/alert-rules/:botId/total-pnl
+GET  /plans/current
+PUT  /plans/current
+PUT  /plans/current/bots/:botId
+GET  /metrics
+```
+
+Swagger UI: `http://127.0.0.1:3100/api-docs`
+
+---
+
+## Скрипты
 
 ```bash
-chmod +x scripts/start_backend_launchd.sh
+# Обновить данные ботов из Bybit API
+node scripts/refresh_bybit_bots.js --api-only
+
+# Отчёт по активным ботам с APR
+node scripts/report_active_bots.js
+
+# Сохранить снапшот активных ботов
+node scripts/snapshot_active_bots.js
+```
+
+---
+
+## Автозапуск (macOS launchd)
+
+```bash
 cp ops/launchd/local.bybit-bots.backend.plist ~/Library/LaunchAgents/
 launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/local.bybit-bots.backend.plist
 launchctl kickstart -k gui/$(id -u)/local.bybit-bots.backend
-launchctl print gui/$(id -u)/local.bybit-bots.backend
 ```
 
-Остановить и убрать агент:
+Логи: `db/tmp/launchd-backend.stdout.log` / `db/tmp/launchd-backend.stderr.log`
 
-```bash
-launchctl bootout gui/$(id -u) ~/Library/LaunchAgents/local.bybit-bots.backend.plist
-rm ~/Library/LaunchAgents/local.bybit-bots.backend.plist
-```
+---
 
-## Как это работает
+## База данных
 
-1. Скрипт берет известные `bot_id` из локальной SQLite базы.
-2. По всем `futures grid` ботам идет в официальный `POST /v5/fgridbot/detail`.
-3. Активным ботам обновляет только inventory.
-4. Для завершенных ботов дописывает снапшот в историю только при изменении полей.
+SQLite по пути `db/bybit-bots.sqlite`. Основные таблицы:
 
-## Откуда берутся новые bot_id
-
-Сейчас порядок такой:
-
-1. Если заданы browser env для `list-all-bots`, скрипт пробует Bybit browser endpoint.
-2. Если browser endpoint недоступен, можно использовать fallback через Chrome History.
-
-На текущий момент у Bybit есть косяк для CLI-сценария:
-
-- `https://www.bybit.com/x-api/s1/bot/tradingbot/v1/list-all-bots` часто отдает `403`
-- поэтому стабильный публичный список ботов через API/CLI пока не гарантирован
-- зато `fgridbot/detail` для известного `bot_id` работает нормально
-
-Если позже Bybit откроет нормальный список ботов в API, этот refresh можно будет перевести на полностью request-based схему без history fallback.
-
-## Полезные SQL запросы
-
-Активные боты:
+| Таблица | Описание |
+|---|---|
+| `bot_inventory` | Все известные боты: статус, символ, тип |
+| `completed_fgrid_stats_history` | История снапшотов завершённых фьючерсных грид-ботов |
+| `bots` | Снапшоты активных ботов (управляется Prisma) |
+| `bot_snapshots` | Временные ряды снапшотов по каждому боту |
 
 ```sql
-select bot_id, symbol, status
-from bot_inventory
-where status like '%RUNNING%'
-order by bot_id;
+-- Активные боты
+SELECT bot_id, symbol, status FROM bot_inventory WHERE status LIKE '%RUNNING%';
+
+-- Последние снапшоты завершённых ботов
+SELECT bot_id, symbol, total_pnl, apr, snapshot_at
+FROM completed_fgrid_stats_history ORDER BY snapshot_id DESC;
 ```
 
-Последние снапшоты завершенных `futures grid`:
+---
 
-```sql
-select bot_id, symbol, total_pnl, apr, arbitrage_count, snapshot_at
-from completed_fgrid_stats_history
-order by snapshot_id desc;
-```
+## Заметки
 
-## Требования
-
-- `BYBIT_API_KEY`
-- `BYBIT_API_SECRET`
-- `BYBIT_ENV=mainnet` или `testnet`
-
-Скрипт умеет подхватывать эти значения из `~/.zshrc`, если они не проброшены в текущее окружение.
+- Эндпоинт `list-all-bots` Bybit часто возвращает `403` в CLI-контексте — обнаружение ботов опирается на известные `bot_id` из локальной БД
+- `fgridbot/detail` по известному `bot_id` работает стабильно
+- Плечо (`x2`, `x3`) берётся из raw-ответа `fgridbot/detail`
+- Статистика за 7д / 30д / 90д требует почти полного покрытия периода, иначе считается недоступной

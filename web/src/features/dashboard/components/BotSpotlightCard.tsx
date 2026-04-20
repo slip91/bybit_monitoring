@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 
-import { formatApr, formatMoney, formatNumber, statusHintDescription, statusHintLabel, statusLabel, valueToneClass } from "../../../lib/format";
-import type { BotListItem } from "../../../lib/types";
-import { cn, ui } from "../../../lib/ui";
+import { formatApr, formatMoney, formatNumber, statusHintDescription, statusHintLabel, statusLabel, valueToneClass } from "@lib/format";
+import type { BotListItem } from "@lib/types";
+import { cn, ui } from "@lib/ui";
 
 type BotSpotlightCardProps = {
   title: string;

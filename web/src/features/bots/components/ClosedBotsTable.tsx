@@ -1,6 +1,6 @@
-import { cn, ui } from "../../../lib/ui";
-import { formatDateTime, formatMoney, formatNumber, formatExclusionState, valueToneClass, EXCLUSION_REASON_OPTIONS } from "../../../lib/format";
-import type { ClosedBotsHistory, ExclusionReason } from "../../../lib/types";
+import { cn, ui } from "@lib/ui";
+import { formatDateTime, formatMoney, formatNumber, formatExclusionState, valueToneClass, EXCLUSION_REASON_OPTIONS } from "@lib/format";
+import type { ClosedBotsHistory, ExclusionReason } from "@lib/types";
 
 type Props = {
   history: ClosedBotsHistory | null;

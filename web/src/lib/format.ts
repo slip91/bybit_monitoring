@@ -1,5 +1,5 @@
 function isNullish(value: number | null): value is null {
-  return value === null || value === undefined;
+  return value === null;
 }
 
 export function formatMoney(value: number | null, digits = 2) {
@@ -173,7 +173,9 @@ export function factVsRuntimeToneClass(value: number | null) {
 }
 
 export function toErrorMessage(error: unknown): string {
-  return toErrorMessage(error);
+  if (error instanceof Error) return error.message;
+  if (typeof error === "string") return error;
+  return "Неизвестная ошибка";
 }
 
 export function exclusionReasonLabel(value: string | null): string {

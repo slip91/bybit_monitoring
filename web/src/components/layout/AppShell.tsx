@@ -2,33 +2,16 @@ import { NavLink, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import type { PropsWithChildren } from "react";
 
-import { getServiceStatus } from "../../lib/api";
-import { formatDateTime } from "../../lib/format";
-import type { ServiceStatus } from "../../lib/types";
-import { cn, ui } from "../../lib/ui";
+import { getServiceStatus } from "@lib/api";
+import { formatDateTime } from "@lib/format";
+import type { ServiceStatus } from "@lib/types";
+import { cn, ui } from "@lib/ui";
 
 export function AppShell({ children }: PropsWithChildren) {
   const location = useLocation();
   const [serviceStatus, setServiceStatus] = useState<ServiceStatus | null>(null);
-  const isDashboard = location.pathname === "/";
-  const isPlan = location.pathname.startsWith("/plan");
-  const isSummary = location.pathname.startsWith("/summary");
-  const isHistory = location.pathname.startsWith("/history");
-  const isService = location.pathname.startsWith("/service");
-  const isSettings = location.pathname.startsWith("/settings");
-  const title = isDashboard
-    ? "Пульт ботов"
-    : isPlan
-      ? "План дохода"
-      : isSummary
-        ? "Статистика периода"
-        : isHistory
-          ? "Закрытые боты"
-          : isService
-            ? "Сервис"
-            : isSettings
-              ? "Настройки алертов"
-              : "История бота";
+
+  const title = getPageTitle(location.pathname);
 
   useEffect(() => {
     let cancelled = false;
@@ -132,4 +115,20 @@ function getHeaderStatusAppearance(serviceStatus: ServiceStatus | null) {
     label: "Ошибка обновления",
     timeLabel: lastRelevantAt ? `последнее ${formatDateTime(lastRelevantAt)}` : "нет успешных данных",
   };
+}
+
+const PAGE_TITLES: Array<[string, string]> = [
+  ["/", "Пульт ботов"],
+  ["/plan", "План дохода"],
+  ["/summary", "Статистика периода"],
+  ["/history", "Закрытые боты"],
+  ["/service", "Сервис"],
+  ["/settings", "Настройки алертов"],
+];
+
+function getPageTitle(pathname: string): string {
+  const match = PAGE_TITLES.find(([prefix]) =>
+    prefix === "/" ? pathname === "/" : pathname.startsWith(prefix)
+  );
+  return match?.[1] ?? "История бота";
 }

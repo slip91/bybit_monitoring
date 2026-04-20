@@ -3,17 +3,11 @@ import type { FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { PlanHeader, PlanStats, ParticipantsTable, PlanForm } from './components';
-import { getCurrentPlan, updateBotStatsExclusion, updateCurrentPlan, updateCurrentPlanBot } from '../../lib/api';
-import { toErrorMessage } from '../../lib/format';
-import type { Plan, PlanParticipant } from '../../lib/types';
-import { cn, ui } from '../../lib/ui';
+import { getCurrentPlan, updateCurrentPlan, updateCurrentPlanBot } from '@lib/api';
+import { toErrorMessage } from '@lib/format';
+import type { Plan } from '@lib/types';
+import { cn, ui } from '@lib/ui';
 
-type ExclusionReason = 'experiment' | 'technical' | 'duplicate' | 'invalid_data' | 'manual_ignore' | 'migration' | 'other';
-
-/**
- * Страница управления планом дохода
- * Показывает участников плана, статистику и позволяет управлять настройками
- */
 export function PlanPage() {
   const navigate = useNavigate();
   const [plan, setPlan] = useState<Plan | null>(null);
@@ -27,7 +21,6 @@ export function PlanPage() {
   const [error, setError] = useState<string | null>(null);
   const [saveMessage, setSaveMessage] = useState<string | null>(null);
 
-  // Загрузка плана при монтировании компонента
   useEffect(() => {
     let cancelled = false;
 
@@ -57,7 +50,6 @@ export function PlanPage() {
     };
   }, []);
 
-  // Сортировка участников по вкладу в доход (от большего к меньшему)
   const participants = useMemo(() => {
     return [...(plan?.participants || [])].sort((a, b) => {
       const aContribution = a.contributionUsd ?? 0;
@@ -66,14 +58,10 @@ export function PlanPage() {
     });
   }, [plan]);
 
-  // Группировка участников по категориям
   const activeInPlan = participants.filter((p) => p.planCategory === 'active_in_plan' && !p.excludeFromPlan);
   const activeOutsidePlan = participants.filter((p) => p.planCategory === 'active_out_of_plan' && !p.excludeFromPlan);
   const excluded = participants.filter((p) => p.excludeFromPlan);
 
-  /**
-   * Включить/исключить бота из плана
-   */
   async function toggleParticipant(botId: string) {
     const participant = participants.find((p) => p.botId === botId);
     if (!participant || busyBotId) return;

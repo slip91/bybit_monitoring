@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { useAsyncEffect } from "../lib/useAsyncEffect";
-import { getClosedBotsHistory, updateClosedRunStatsExclusion } from "../lib/api";
-import { toErrorMessage, exclusionReasonDraft } from "../lib/format";
-import type { ClosedBotsHistory, ExclusionReason } from "../lib/types";
-import { cn, ui } from "../lib/ui";
-import { ClosedBotsHeader, ClosedBotsTable } from "../features/bots/components";
+import { useAsyncEffect } from "@lib/useAsyncEffect";
+import { getClosedBotsHistory, updateClosedRunStatsExclusion } from "@lib/api";
+import { toErrorMessage, exclusionReasonDraft } from "@lib/format";
+import type { ClosedBotsHistory, ExclusionReason } from "@lib/types";
+import { cn, ui } from "@lib/ui";
+import { ClosedBotsHeader, ClosedBotsTable } from "@features/bots/components";
 
 /**
  * Страница истории закрытых ботов

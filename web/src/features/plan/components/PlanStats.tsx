@@ -1,5 +1,5 @@
-import { formatMoney, formatPercent } from '../../../lib/format';
-import { cn, ui } from '../../../lib/ui';
+import { formatMoney, formatPercent } from '@lib/format';
+import { cn, ui } from '@lib/ui';
 
 type PlanStatsProps = {
   requiredCapital: number | null;

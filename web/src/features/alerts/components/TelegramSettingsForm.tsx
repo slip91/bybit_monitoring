@@ -1,7 +1,7 @@
 import type { FormEvent } from "react";
-import { cn, ui } from "../../../lib/ui";
-import { formatDateTime } from "../../../lib/format";
-import type { TelegramAlertSettings } from "../../../lib/types";
+import { cn, ui } from "@lib/ui";
+import { formatDateTime } from "@lib/format";
+import type { TelegramAlertSettings } from "@lib/types";
 
 type Props = {
   settings: TelegramAlertSettings | null;

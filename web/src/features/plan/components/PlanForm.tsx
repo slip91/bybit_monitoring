@@ -1,5 +1,5 @@
 import type { FormEvent } from 'react';
-import { cn, ui } from '../../../lib/ui';
+import { cn, ui } from '@lib/ui';
 
 type PlanFormProps = {
   title: string;

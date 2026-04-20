@@ -1,6 +1,6 @@
-import { formatDateTime, formatNumber } from "../../../lib/format";
-import { cn, ui } from "../../../lib/ui";
-import type { AlertItem } from "../../../lib/types";
+import { formatDateTime, formatNumber } from "@lib/format";
+import { cn, ui } from "@lib/ui";
+import type { AlertItem } from "@lib/types";
 
 type AlertsPanelProps = {
   alerts: AlertItem[];

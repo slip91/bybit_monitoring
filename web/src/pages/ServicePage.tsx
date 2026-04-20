@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { AlertsPanel } from "../features/dashboard/components";
-import { StatCard } from "../features/dashboard/components";
-import { getAlerts, getHealth, getServiceStatus } from "../lib/api";
-import { formatDateTime, formatDuration, formatNumber, toErrorMessage } from "../lib/format";
-import type { AlertItem, HealthStatus, ServiceStatus } from "../lib/types";
-import { cn, ui } from "../lib/ui";
+import { AlertsPanel } from "@features/dashboard/components";
+import { StatCard } from "@features/dashboard/components";
+import { getAlerts, getHealth, getServiceStatus } from "@lib/api";
+import { formatDateTime, formatDuration, formatNumber, toErrorMessage } from "@lib/format";
+import type { AlertItem, HealthStatus, ServiceStatus } from "@lib/types";
+import { cn, ui } from "@lib/ui";
 
 export function ServicePage() {
   const [health, setHealth] = useState<HealthStatus | null>(null);

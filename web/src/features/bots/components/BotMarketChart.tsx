@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import type { CandlestickData, LineStyle, LineWidth } from "lightweight-charts";
-import type { BotMarketChart } from "../../../lib/types";
-import { toErrorMessage } from "../../../lib/format";
-import { cn, ui } from "../../../lib/ui";
+import type { BotMarketChart as BotMarketChartData } from "@lib/types";
+import { toErrorMessage } from "@lib/format";
+import { cn, ui } from "@lib/ui";
 
 type BotMarketChartProps = {
-  data: BotMarketChart;
+  data: BotMarketChartData;
   totalPnl: number | null;
   gridProfit: number | null;
 };
@@ -255,7 +255,7 @@ function attachPriceLine(
   });
 }
 
-function buildApproximateGridLevels(data: BotMarketChart) {
+function buildApproximateGridLevels(data: BotMarketChartData) {
   const lower = data.overlays.lowerRangePrice;
   const upper = data.overlays.upperRangePrice;
   const count = data.grid.count;
@@ -296,7 +296,7 @@ async function toggleFullscreen(element: HTMLElement | null) {
   await element.requestFullscreen();
 }
 
-function buildPriceSummary(data: BotMarketChart, totalPnl: number | null, gridProfit: number | null) {
+function buildPriceSummary(data: BotMarketChartData, totalPnl: number | null, gridProfit: number | null) {
   const current = data.overlays.currentPrice;
   const entry = data.overlays.entryPrice;
   const lower = data.overlays.lowerRangePrice;

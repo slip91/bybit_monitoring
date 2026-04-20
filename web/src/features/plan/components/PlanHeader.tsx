@@ -1,4 +1,4 @@
-import { cn, ui } from '../../../lib/ui';
+import { cn, ui } from '@lib/ui';
 
 type PlanHeaderProps = {
   title: string;

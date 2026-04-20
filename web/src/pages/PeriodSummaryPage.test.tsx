@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { PeriodSummaryPage } from "./PeriodSummaryPage";
+import { PeriodSummaryPage } from "@pages/PeriodSummaryPage";
 
 vi.mock("../lib/api", () => ({
   getPeriodSummary: vi.fn(),

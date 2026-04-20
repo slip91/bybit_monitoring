@@ -1,12 +1,13 @@
 import { useState } from "react";
 
-import { useAsyncEffect } from "../lib/useAsyncEffect";
+import { useAsyncEffect } from "@lib/useAsyncEffect";
 
-import { AlertsPanel, BotSpotlightCard, BotTable } from "../features/dashboard/components";
-import { getAlerts, getBots, getDashboardSummary } from "../lib/api";
-import { formatApr, formatDateTime, formatMoney, formatNumber, toErrorMessage, valueToneClass } from "../lib/format";
-import type { AlertItem, BotListItem, DashboardSummary } from "../lib/types";
-import { cn, ui } from "../lib/ui";
+import { AlertsPanel, BotSpotlightCard, BotTable } from "@features/dashboard/components";
+import { getAlerts, getBots, getDashboardSummary } from "@lib/api";
+import { formatApr, formatDateTime, formatMoney, formatNumber, toErrorMessage, valueToneClass } from "@lib/format";
+import type { AlertItem, BotListItem, DashboardSummary } from "@lib/types";
+import { cn, ui } from "@lib/ui";
+import { ErrorBoundary } from "@components/layout";
 
 export function DashboardPage() {
   const [bots, setBots] = useState<BotListItem[]>([]);
@@ -102,8 +103,8 @@ export function DashboardPage() {
         <BotSpotlightCard title="Самая активная сетка" bot={mostActiveBot} metric="activityCount" />
       </section>
 
-      <BotTable bots={activeBots} />
-      <AlertsPanel alerts={alerts} />
+      <ErrorBoundary><BotTable bots={activeBots} /></ErrorBoundary>
+      <ErrorBoundary><AlertsPanel alerts={alerts} /></ErrorBoundary>
     </div>
   );
 }

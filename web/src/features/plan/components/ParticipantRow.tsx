@@ -1,6 +1,6 @@
-import type { PlanParticipant } from '../../../lib/types';
-import { formatMoney, formatPercent, statusLabel, valueToneClass } from '../../../lib/format';
-import { cn, ui } from '../../../lib/ui';
+import type { PlanParticipant } from '@lib/types';
+import { formatMoney, formatPercent, statusLabel, valueToneClass } from '@lib/format';
+import { cn, ui } from '@lib/ui';
 
 type ParticipantRowProps = {
   participant: PlanParticipant;

@@ -15,9 +15,9 @@ import {
   statusHintDescription,
   statusLabel,
   valueToneClass,
-} from "../../../lib/format";
-import type { BotListItem } from "../../../lib/types";
-import { cn, ui } from "../../../lib/ui";
+} from "@lib/format";
+import type { BotListItem } from "@lib/types";
+import { cn, ui } from "@lib/ui";
 
 type BotTableProps = {
   bots: BotListItem[];

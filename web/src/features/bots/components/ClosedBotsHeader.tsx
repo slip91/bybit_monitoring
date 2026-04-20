@@ -1,7 +1,7 @@
-import { cn, ui } from "../../../lib/ui";
-import { StatCard } from "../../dashboard/components/StatCard";
-import { formatNumber, formatMoney, valueToneClass, coverageStatusLabel } from "../../../lib/format";
-import type { ClosedBotsHistory } from "../../../lib/types";
+import { cn, ui } from "@lib/ui";
+import { StatCard } from "@features/dashboard/components/StatCard";
+import { formatNumber, formatMoney, valueToneClass, coverageStatusLabel } from "@lib/format";
+import type { ClosedBotsHistory } from "@lib/types";
 
 type Props = {
   history: ClosedBotsHistory | null;

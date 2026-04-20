@@ -1,6 +1,6 @@
-import { cn, ui } from "../../../lib/ui";
-import { formatDateTime } from "../../../lib/format";
-import type { ServiceStatus } from "../../../lib/types";
+import { cn, ui } from "@lib/ui";
+import { formatDateTime } from "@lib/format";
+import type { ServiceStatus } from "@lib/types";
 
 type Props = {
   serviceStatus: ServiceStatus | null;

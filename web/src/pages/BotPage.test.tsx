@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { BotPage } from "./BotPage";
+import { BotPage } from "@pages/BotPage";
 
 vi.mock("../lib/api", () => ({
   getBot: vi.fn(),

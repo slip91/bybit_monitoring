@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { cn, ui } from "../../../lib/ui";
+import { cn, ui } from "@lib/ui";
 
 type StatCardProps = {
   label: string;

@@ -1,6 +1,6 @@
-import { cn, ui } from "../../../lib/ui";
-import { formatDateTime, formatMoney, statusLabel, valueToneClass } from "../../../lib/format";
-import type { BotAlertRule } from "../../../lib/types";
+import { cn, ui } from "@lib/ui";
+import { formatDateTime, formatMoney, statusLabel, valueToneClass } from "@lib/format";
+import type { BotAlertRule } from "@lib/types";
 
 type Props = {
   rules: BotAlertRule[];

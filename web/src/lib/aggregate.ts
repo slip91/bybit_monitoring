@@ -33,9 +33,8 @@ export function aggregateByTime<T>(
   }
 
   const sorted = [...items].sort((a, b) => getTimestamp(a) - getTimestamp(b));
-  const latestTs = getTimestamp(sorted[sorted.length - 1]);
+  const latestTs = getTimestamp(sorted[sorted.length - 1]!);
 
-  // Фильтр по окну (recent или 30d)
   let windowed = sorted;
   if (options.mode === "recent") {
     windowed = sorted.slice(-options.recentCount);
@@ -44,7 +43,6 @@ export function aggregateByTime<T>(
     windowed = sorted.filter((item) => getTimestamp(item) >= threshold);
   }
 
-  // Если точек больше чем maxBins — агрегируем
   if (windowed.length <= options.maxBins) {
     return {
       labels: windowed.map((item) => String(getTimestamp(item))),
@@ -57,8 +55,7 @@ export function aggregateByTime<T>(
 
   for (let i = 0; i < options.maxBins; i++) {
     const binEnd = Math.min(Math.floor((i + 1) * binSize), windowed.length);
-    // Берём последний элемент в бине — актуальное состояние
-    result.push(windowed[binEnd - 1]);
+    result.push(windowed[binEnd - 1]!);
   }
 
   return {
@@ -68,22 +65,9 @@ export function aggregateByTime<T>(
 }
 
 /** Форматирует unix-ms в короткую метку времени */
-export function formatBinLabel(tsMs: number, mode: AggregationMode = "full"): string {
+export function formatBinLabel(tsMs: number, _mode: AggregationMode = "full"): string {
   const date = new Date(tsMs);
-  if (Number.isNaN(date.getTime())) {
-    return String(tsMs);
-  }
-
-  // Для 30d показываем только день и время, для полного периода — месяц+день+время
-  if (mode === "30d" || mode === "recent") {
-    return new Intl.DateTimeFormat("ru-RU", {
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    }).format(date);
-  }
-
+  if (Number.isNaN(date.getTime())) return String(tsMs);
   return new Intl.DateTimeFormat("ru-RU", {
     month: "short",
     day: "numeric",
