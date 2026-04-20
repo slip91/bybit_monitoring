@@ -33,8 +33,7 @@ export function PeriodItemsTable({
             <span>Показывать исключенные</span>
           </label>
           <span className={ui.sectionCount()}>
-            {summary?.summary.botsInvolvedCount ?? 0} в расчете · {summary?.summary.excludedBotsCount ?? 0} active исключено ·{" "}
-            {summary?.summary.excludedRunsCount ?? 0} closed исключено
+            {`${summary?.summary.botsInvolvedCount ?? 0} в расчете · ${summary?.summary.excludedBotsCount ?? 0} active исключено · ${summary?.summary.excludedRunsCount ?? 0} closed исключено`}
           </span>
         </div>
       </div>
