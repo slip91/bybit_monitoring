@@ -296,6 +296,20 @@ async function toggleFullscreen(element: HTMLElement | null) {
   await element.requestFullscreen();
 }
 
+function describePriceVsEntry(current: number | null, entry: number | null): string {
+  if (current === null || entry === null) return "Недостаточно данных";
+  if (current > entry) return `Цена выше входа на ${formatDelta(((current - entry) / entry) * 100)}`;
+  if (current < entry) return `Цена ниже входа на ${formatDelta(((entry - current) / entry) * 100)}`;
+  return "Цена около входа";
+}
+
+function describePnlDivergence(gridProfit: number | null, totalPnl: number | null): string {
+  if (gridProfit !== null && gridProfit > 0 && totalPnl !== null && totalPnl < 0) {
+    return "Сетка зарабатывает, но позиционная часть ниже входа и тянет total pnl вниз";
+  }
+  return "Grid profit и total pnl совпадают по знаку или данных пока мало";
+}
+
 function buildPriceSummary(data: BotMarketChartData, totalPnl: number | null, gridProfit: number | null) {
   const current = data.overlays.currentPrice;
   const entry = data.overlays.entryPrice;
@@ -305,14 +319,7 @@ function buildPriceSummary(data: BotMarketChartData, totalPnl: number | null, gr
   return [
     {
       title: "Относительно входа",
-      value:
-        current === null || entry === null
-          ? "Недостаточно данных"
-          : current > entry
-            ? `Цена выше входа на ${formatDelta(((current - entry) / entry) * 100)}`
-            : current < entry
-              ? `Цена ниже входа на ${formatDelta(((entry - current) / entry) * 100)}`
-              : "Цена около входа",
+      value: describePriceVsEntry(current, entry),
     },
     {
       title: "Положение в диапазоне",
@@ -324,10 +331,7 @@ function buildPriceSummary(data: BotMarketChartData, totalPnl: number | null, gr
     },
     {
       title: "Почему PnL расходится",
-      value:
-        gridProfit !== null && gridProfit > 0 && totalPnl !== null && totalPnl < 0
-          ? "Сетка зарабатывает, но позиционная часть ниже входа и тянет total pnl вниз"
-          : "Grid profit и total pnl совпадают по знаку или данных пока мало",
+      value: describePnlDivergence(gridProfit, totalPnl),
     },
   ];
 }
