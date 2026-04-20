@@ -54,8 +54,7 @@ export function ServiceStatusCard({ serviceStatus }: Props) {
       ) : null}
       {serviceStatus?.isStale ? (
         <div className={cn(ui.note({ tone: "error" }), "mt-4")}>
-          Данные давно не обновлялись. Последний успешный цикл был{" "}
-          {formatDateTime(serviceStatus.lastSuccessAt || null)}.
+          {`Данные давно не обновлялись. Последний успешный цикл был ${formatDateTime(serviceStatus.lastSuccessAt || null)}.`}
         </div>
       ) : null}
     </article>
