@@ -112,13 +112,13 @@ export function PeriodHeroSection({
         </article>
       </div>
 
-      {summary?.summary.notes.length ? (
+      {(summary?.summary.notes.length ?? 0) > 0 && (
         <div className="mt-5 flex flex-wrap gap-2">
-          {summary.summary.notes.map((note) => (
+          {summary!.summary.notes.map((note) => (
             <span key={note} className={ui.pill()}>{periodNoteLabel(note)}</span>
           ))}
         </div>
-      ) : null}
+      )}
 
       <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <StatCard label="Период coverage" value={formatPercent((summary?.window.coverageRatio ?? 0) * 100, 0)} footnote={describeWindowCoverage(summary)} />
