@@ -114,10 +114,6 @@ a {
 }
 
 /* ─── Utility classes ────────────────────────────────────────── */
-.stat-footnote-accent {
-  font-weight: 600;
-}
-
 .value-positive {
   color: var(--color-success);
 }
@@ -178,10 +174,5 @@ a {
 
 /* ─── Plan chips ─────────────────────────────────────────────── */
 .plan-basis-chip-active {
-  box-shadow: inset 0 0 0 1px rgba(84, 208, 200, 0.22);
-}
-
-.plan-basis-chip-disabled {
-  opacity: 0.5;
-  cursor: default;
+  box-shadow: inset 0 0 0 1px var(--color-brand-surface-lg);
 }
