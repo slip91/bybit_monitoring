@@ -1,6 +1,8 @@
 import { lazy, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { MS_PER_HOUR } from "@lib/time";
+
 import { BarChart, ChartCard, LineChart } from "@components/ui";
 import { ErrorBoundary } from "@components/layout";
 import { CardSkeleton, TableSkeleton } from "@components/ui";
@@ -248,7 +250,7 @@ function sumRecentActivityDeltas<T extends { snapshotTime: string }>(
   if (!latest) return null;
   const latestTs = new Date(latest).getTime();
   if (Number.isNaN(latestTs)) return null;
-  const threshold = latestTs - hours * 3600_000;
+  const threshold = latestTs - hours * MS_PER_HOUR;
   let total = 0, hasValues = false;
   snapshots.forEach((s, i) => {
     const ts = new Date(s.snapshotTime).getTime();

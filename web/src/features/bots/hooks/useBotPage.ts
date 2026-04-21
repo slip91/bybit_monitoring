@@ -5,6 +5,7 @@ import { getBot, getBotMarketChart, getBotSnapshots } from "@lib/api";
 import { aggregateByTime, defaultOptions, formatBinLabel } from "@lib/aggregate";
 import type { AggregationMode } from "@lib/aggregate";
 import { factVsRuntimeRatio, toErrorMessage } from "@lib/format";
+import { SECONDS_PER_DAY } from "@lib/time";
 import type { BotDetails, BotMarketChart, BotSnapshot } from "@lib/types";
 
 const OPTS = defaultOptions();
@@ -92,7 +93,7 @@ export function useBotPage() {
   const gridProfitCurrent = latest?.gridProfit ?? null;
   const gridProfitByRuntimePerDay =
     gridProfitCurrent === null || workRuntimeSec === null || workRuntimeSec <= 0
-      ? null : gridProfitCurrent / (workRuntimeSec / 86400);
+      ? null : gridProfitCurrent / (workRuntimeSec / SECONDS_PER_DAY);
   const factTodayVsRuntime = factVsRuntimeRatio(bot?.factPnlPerDay ?? null, gridProfitByRuntimePerDay);
 
   return {

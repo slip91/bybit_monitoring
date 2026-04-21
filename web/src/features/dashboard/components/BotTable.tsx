@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
+import { SECONDS_PER_DAY } from "@lib/time";
+
 import {
   annualizedStatusLabel,
   factVsRuntimeRatio,
@@ -150,7 +152,7 @@ export function BotTable({ bots }: BotTableProps) {
 function runtimeIncomePerDay(bot: BotListItem) {
   const runtimeSec = bot.workRuntimeSec ?? bot.runtimeSec;
   if (bot.gridProfit === null || runtimeSec === null || runtimeSec <= 0) return null;
-  return bot.gridProfit / (runtimeSec / 86400);
+  return bot.gridProfit / (runtimeSec / SECONDS_PER_DAY);
 }
 
 function runtimeIncomePer100Usd(bot: BotListItem) {
