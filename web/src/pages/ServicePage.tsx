@@ -172,12 +172,13 @@ export function ServicePage() {
   );
 }
 
+const TONE_TO_PILL = {
+  ok: "success", running: "running", stale: "stale", error: "error",
+} as const;
+
 function serviceToneToPill(tone: ReturnType<typeof getServiceTone>) {
-  if (tone === "ok")      return "success" as const;
-  if (tone === "running") return "running" as const;
-  if (tone === "stale")   return "stale" as const;
-  if (tone === "error")   return "error" as const;
-  return "default" as const;
+  return (TONE_TO_PILL[tone as keyof typeof TONE_TO_PILL] ?? "default") as
+    "success" | "running" | "stale" | "error" | "default";
 }
 
 function serviceStatusLabel(serviceStatus: ServiceStatus | null) {
