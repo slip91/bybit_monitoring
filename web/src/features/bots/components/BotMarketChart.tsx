@@ -173,7 +173,7 @@ export function BotMarketChart({ data, totalPnl, gridProfit }: BotMarketChartPro
 
   return (
     <div className="grid gap-4">
-      <div ref={panelRef} className={cn("rounded-[24px] border border-[rgba(180,217,236,0.12)] bg-[rgba(255,255,255,0.02)] p-4", isFullscreen && "min-h-screen rounded-none border-none bg-[#07131d] p-6")}>
+      <div ref={panelRef} className={chartPanelClass(isFullscreen)}>
         <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
           <div className="grid gap-1">
             <strong>График цены</strong>
@@ -386,4 +386,11 @@ function describeComfortZone(current: number | null, lower: number | null, upper
 
 function formatDelta(value: number) {
   return `${new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 2 }).format(Math.abs(value))}%`;
+}
+
+function chartPanelClass(isFullscreen: boolean) {
+  return cn(
+    "rounded-[24px] border border-[rgba(180,217,236,0.12)] bg-[rgba(255,255,255,0.02)] p-4",
+    isFullscreen && "min-h-screen rounded-none border-none bg-[#07131d] p-6"
+  );
 }
