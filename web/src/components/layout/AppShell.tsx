@@ -37,7 +37,7 @@ export function AppShell({ children }: PropsWithChildren) {
 
   return (
     <div className="relative min-h-screen px-4 py-6 md:px-8">
-      <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(84,208,200,0.08),transparent_22%),radial-gradient(circle_at_80%_14%,rgba(255,159,104,0.08),transparent_26%)]" />
+      <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_20%_20%,var(--color-brand-glow),transparent_22%),radial-gradient(circle_at_80%_14%,var(--color-warm-glow),transparent_26%)]" />
       <header className="relative z-10 mb-7 flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
         <div className="grid justify-items-start gap-3">
           <p className={ui.eyebrow()}>Bybit Bots</p>
@@ -54,7 +54,7 @@ export function AppShell({ children }: PropsWithChildren) {
           </nav>
         </div>
         <div className={cn("inline-flex items-center gap-3 self-start rounded-full border px-4 py-2 text-sm", statusAppearance.toneClass)}>
-          <span className="h-2.5 w-2.5 rounded-full bg-current opacity-90 shadow-[0_0_0_4px_rgba(255,255,255,0.08)]" />
+          <span className="h-2.5 w-2.5 rounded-full bg-current opacity-90 shadow-[0_0_0_4px_var(--color-overlay-mid)]" />
           <span>{statusAppearance.label}</span>
           <span className="text-[0.82rem] text-[var(--color-text-muted)]">{statusAppearance.timeLabel}</span>
         </div>
@@ -69,8 +69,8 @@ function navClassName(isActive: boolean) {
     ui.pill(),
     "px-4 py-2 text-sm text-[var(--color-text-primary)] transition duration-150",
     isActive
-      ? "border-[rgba(84,208,200,0.42)] bg-[rgba(84,208,200,0.18)] text-[var(--color-brand-text)] shadow-[inset_0_0_0_1px_rgba(84,208,200,0.14),0_10px_28px_rgba(84,208,200,0.14)]"
-      : "hover:border-[rgba(180,217,236,0.24)] hover:bg-[rgba(255,255,255,0.05)]"
+      ? "border-[rgba(84,208,200,0.42)] bg-[var(--color-brand-surface-md)] text-[var(--color-brand-text)] shadow-[inset_0_0_0_1px_rgba(84,208,200,0.14),0_10px_28px_rgba(84,208,200,0.14)]"
+      : "hover:border-[var(--color-blue-mid)] hover:bg-[var(--color-overlay-soft)]"
   );
 }
 

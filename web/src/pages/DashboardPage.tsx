@@ -72,26 +72,26 @@ export function DashboardPage() {
             label="Суммарный капитал"
             value={formatMoney(summary?.totals.totalEquity ?? null)}
             footnote={`Последний снапшот ${formatDateTime(summary?.totals.latestSnapshotTime ?? null)}`}
-            accentClass="border-[rgba(84,208,200,0.22)] bg-[linear-gradient(180deg,rgba(84,208,200,0.12),rgba(255,255,255,0.03))]"
+            accentClass="border-[var(--color-brand-surface-lg)] bg-[linear-gradient(180deg,var(--color-brand-glow-md),var(--color-overlay-faint))]"
           />
           <DashboardKpiCard
             label="Прибыль/убыток по сеткам"
             value={formatMoney(summary?.totals.totalPnl ?? null)}
             footnote="Сумма total PnL по активным ботам"
             valueClassName={valueToneClass(summary?.totals.totalPnl ?? null)}
-            accentClass="border-[rgba(255,159,104,0.22)] bg-[linear-gradient(180deg,rgba(255,159,104,0.12),rgba(255,255,255,0.03))]"
+            accentClass="border-[var(--color-warm-glow-lg)] bg-[linear-gradient(180deg,var(--color-warm-glow-md),var(--color-overlay-faint))]"
           />
           <DashboardKpiCard
             label="Активные боты"
             value={formatNumber(activeBots.length, 0)}
             footnote={`${summary?.totals.openAlerts ?? 0} открытых алертов`}
-            accentClass="border-[rgba(184,233,94,0.22)] bg-[linear-gradient(180deg,rgba(184,233,94,0.1),rgba(255,255,255,0.03))]"
+            accentClass="border-[var(--color-green-glow-xl)] bg-[linear-gradient(180deg,var(--color-green-glow-md),var(--color-overlay-faint))]"
           />
           <DashboardKpiCard
             label="Средний APR Bybit"
             value={formatApr(summary?.totals.averageTotalApr ?? null)}
             footnote={`APR сетки ${formatApr(summary?.totals.averageGridApr ?? null)}`}
-            accentClass="border-[var(--color-border-subtle)] bg-[linear-gradient(180deg,rgba(180,217,236,0.08),rgba(255,255,255,0.03))]"
+            accentClass="border-[var(--color-border-subtle)] bg-[linear-gradient(180deg,var(--color-blue-faint),var(--color-overlay-faint))]"
           />
         </div>
       </section>
@@ -119,7 +119,7 @@ type DashboardKpiCardProps = {
 
 function DashboardKpiCard({ label, value, footnote, accentClass, valueClassName = "" }: DashboardKpiCardProps) {
   return (
-    <article className={cn(ui.card({ subtle: true }), "border px-5 py-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] backdrop-blur-sm", accentClass)}>
+    <article className={cn(ui.card({ subtle: true }), "border px-5 py-5 shadow-[inset_0_1px_0_var(--color-overlay-faint)] backdrop-blur-sm", accentClass)}>
       <p className={ui.subtitle()}>{label}</p>
       <strong className={cn("mt-3 block text-[2rem] leading-none tracking-[-0.03em]", valueClassName)}>
         {value}

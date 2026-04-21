@@ -32,8 +32,41 @@
   --color-surface-row-hover: rgba(180, 217, 236, 0.04);
 
   /* Brand surface */
-  --color-brand-border:   rgba(84, 208, 200, 0.3);
-  --color-brand-surface:  rgba(84, 208, 200, 0.14);
+  --color-brand-border:       rgba(84, 208, 200, 0.3);
+  --color-brand-border-hover: rgba(84, 208, 200, 0.42);
+  --color-brand-border-focus: rgba(84, 208, 200, 0.35);
+  --color-brand-surface:      rgba(84, 208, 200, 0.14);
+  --color-brand-surface-md:   rgba(84, 208, 200, 0.18);
+  --color-brand-surface-lg:   rgba(84, 208, 200, 0.22);
+  --color-brand-glow:         rgba(84, 208, 200, 0.08);
+  --color-brand-glow-md:      rgba(84, 208, 200, 0.12);
+  --color-brand-glow-lg:      rgba(84, 208, 200, 0.2);
+
+  /* Overlay / glass */
+  --color-overlay-faint:  rgba(255, 255, 255, 0.03);
+  --color-overlay-soft:   rgba(255, 255, 255, 0.05);
+  --color-overlay-mid:    rgba(255, 255, 255, 0.08);
+  --color-shadow-deep:    rgba(0, 0, 0, 0.32);
+
+  /* Background base */
+  --color-bg-deep:        rgba(7, 19, 29, 0.9);
+  --color-bg-panel:       rgba(12, 34, 52, 0.95);
+
+  /* Accent warm (orange) */
+  --color-warm-glow:      rgba(255, 159, 104, 0.08);
+  --color-warm-glow-md:   rgba(255, 159, 104, 0.12);
+  --color-warm-glow-lg:   rgba(255, 159, 104, 0.22);
+
+  /* Accent green */
+  --color-green-glow:     rgba(184, 233, 94, 0.08);
+  --color-green-glow-md:  rgba(184, 233, 94, 0.1);
+  --color-green-glow-lg:  rgba(184, 233, 94, 0.2);
+  --color-green-glow-xl:  rgba(184, 233, 94, 0.22);
+
+  /* Neutral blue */
+  --color-blue-faint:     rgba(180, 217, 236, 0.08);
+  --color-blue-soft:      rgba(180, 217, 236, 0.16);
+  --color-blue-mid:       rgba(180, 217, 236, 0.24);
 
   /* Status surfaces */
   --color-success-border:  rgba(143, 225, 181, 0.15);
