@@ -69,7 +69,7 @@ function navClassName(isActive: boolean) {
     ui.pill(),
     "px-4 py-2 text-sm text-[var(--color-text-primary)] transition duration-150",
     isActive
-      ? "border-[rgba(84,208,200,0.42)] bg-[var(--color-brand-surface-md)] text-[var(--color-brand-text)] shadow-[inset_0_0_0_1px_rgba(84,208,200,0.14),0_10px_28px_rgba(84,208,200,0.14)]"
+      ? "border-[var(--color-brand-border-hover)] bg-[var(--color-brand-surface-md)] text-[var(--color-brand-text)] shadow-[inset_0_0_0_1px_var(--color-brand-inset-md),0_10px_28px_var(--color-brand-inset-md)]"
       : "hover:border-[var(--color-blue-mid)] hover:bg-[var(--color-overlay-soft)]"
   );
 }

@@ -38,6 +38,8 @@
   --color-brand-surface:      rgba(84, 208, 200, 0.14);
   --color-brand-surface-md:   rgba(84, 208, 200, 0.18);
   --color-brand-surface-lg:   rgba(84, 208, 200, 0.22);
+  --color-brand-inset:        rgba(84, 208, 200, 0.16);
+  --color-brand-inset-md:     rgba(84, 208, 200, 0.14);
   --color-brand-glow:         rgba(84, 208, 200, 0.08);
   --color-brand-glow-md:      rgba(84, 208, 200, 0.12);
   --color-brand-glow-lg:      rgba(84, 208, 200, 0.2);
@@ -56,6 +58,8 @@
   --color-warm-glow:      rgba(255, 159, 104, 0.08);
   --color-warm-glow-md:   rgba(255, 159, 104, 0.12);
   --color-warm-glow-lg:   rgba(255, 159, 104, 0.22);
+  --color-warm-surface-md: rgba(255, 159, 104, 0.18);
+  --color-warm-inset:     rgba(255, 159, 104, 0.16);
 
   /* Accent green */
   --color-green-glow:     rgba(184, 233, 94, 0.08);

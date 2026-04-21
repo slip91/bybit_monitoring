@@ -67,7 +67,7 @@ export function ClosedBotsPage() {
   }
 
   if (error && !history) {
-    return <section className={cn(ui.panel(), "border-[rgba(255,106,119,0.22)] px-8 py-7")}>{error}</section>;
+    return <section className={cn(ui.panel(), "border-[var(--color-error-border)] px-8 py-7")}>{error}</section>;
   }
 
   return (

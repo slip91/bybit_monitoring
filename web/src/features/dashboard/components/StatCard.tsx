@@ -30,7 +30,7 @@ export function StatCard({ label, value, tone = "neutral", footnote, labelHint, 
 }
 
 function toneClassName(tone: StatCardProps["tone"]) {
-  if (tone === "cool") return "border-[rgba(84,208,200,0.18)] shadow-[inset_0_0_0_1px_rgba(84,208,200,0.16)]";
-  if (tone === "warm") return "border-[rgba(255,159,104,0.18)] shadow-[inset_0_0_0_1px_rgba(255,159,104,0.16)]";
+  if (tone === "cool") return "border-[var(--color-brand-surface-md)] shadow-[inset_0_0_0_1px_var(--color-brand-inset)]";
+  if (tone === "warm") return "border-[var(--color-warm-surface-md)] shadow-[inset_0_0_0_1px_var(--color-warm-inset)]";
   return "border-[var(--color-border)]";
 }
