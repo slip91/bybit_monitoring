@@ -47,12 +47,7 @@ export function PeriodHeroSection({
           <button
             key={option.key}
             type="button"
-            className={cn(
-              "rounded-[20px] border px-4 py-3 text-left transition",
-              windowKey === option.key
-                ? "plan-basis-chip-active border-[var(--color-brand-border)] bg-[var(--color-brand-surface)]"
-                : "border-[var(--color-border)] bg-[var(--color-surface-subtle)]"
-            )}
+            className={chipClass(windowKey === option.key)}
             onClick={() => onWindowChange(option.key)}
           >
             <strong className="block">{option.label}</strong>
@@ -68,12 +63,7 @@ export function PeriodHeroSection({
           <button
             key={option.key}
             type="button"
-            className={cn(
-              "rounded-[20px] border px-4 py-3 text-left transition",
-              composition === option.key
-                ? "plan-basis-chip-active border-[var(--color-brand-border)] bg-[var(--color-brand-surface)]"
-                : "border-[var(--color-border)] bg-[var(--color-surface-subtle)]"
-            )}
+            className={chipClass(composition === option.key)}
             onClick={() => onCompositionChange(option.key)}
           >
             <strong className="block">{option.label}</strong>
@@ -227,4 +217,13 @@ function periodNoteLabel(value: string) {
     excluded_records_impact: "Часть записей исключена из сводки",
   };
   return labels[value] ?? value;
+}
+
+function chipClass(active: boolean) {
+  return cn(
+    "rounded-[20px] border px-4 py-3 text-left transition",
+    active
+      ? "plan-basis-chip-active border-[var(--color-brand-border)] bg-[var(--color-brand-surface)]"
+      : "border-[var(--color-border)] bg-[var(--color-surface-subtle)]"
+  );
 }
