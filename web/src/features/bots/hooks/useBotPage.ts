@@ -7,6 +7,8 @@ import type { AggregationMode } from "@lib/aggregate";
 import { factVsRuntimeRatio, toErrorMessage } from "@lib/format";
 import type { BotDetails, BotMarketChart, BotSnapshot } from "@lib/types";
 
+const OPTS = defaultOptions();
+
 export function useBotPage() {
   const { botId = "" } = useParams();
   const [bot, setBot] = useState<BotDetails | null>(null);
@@ -64,9 +66,8 @@ export function useBotPage() {
     return () => { cancelled = true; };
   }, [botId, marketInterval, marketRange]);
 
-  const opts = defaultOptions();
   const aggregated = useMemo(
-    () => aggregateByTime(snapshots, (s) => new Date(s.snapshotTime).getTime(), { ...opts, mode: aggregationMode }),
+    () => aggregateByTime(snapshots, (s) => new Date(s.snapshotTime).getTime(), { ...OPTS, mode: aggregationMode }),
     [snapshots, aggregationMode]
   );
   const labels = useMemo(
@@ -99,7 +100,7 @@ export function useBotPage() {
     marketChart, marketChartError, isMarketChartLoading, marketInterval, marketRange,
     setMarketInterval, setMarketRange,
     aggregationMode, setAggregationMode,
-    opts, aggregated, labels, activityDeltaSeries, annualizedGapSeries,
+    opts: OPTS, aggregated, labels, activityDeltaSeries, annualizedGapSeries,
     latest, workRuntimeSec, capitalBase, gridProfitCurrent, gridProfitByRuntimePerDay, factTodayVsRuntime,
   };
 }
