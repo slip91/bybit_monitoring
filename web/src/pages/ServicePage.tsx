@@ -64,7 +64,7 @@ export function ServicePage() {
     return <section className={cn(ui.panel(), "border-[var(--color-error-border)] px-8 py-7")}>{error}</section>;
   }
 
-  const serviceTone = getServiceTone(serviceStatus);
+  const serviceState = getServiceState(serviceStatus);
 
   return (
     <div className={ui.page()}>
@@ -108,8 +108,8 @@ export function ServicePage() {
               <p className={ui.eyebrow()}>Polling</p>
               <h2 className={ui.heading()}>Состояние обновления</h2>
             </div>
-            <span className={ui.pill({ tone: serviceToneToPill(serviceTone) })}>
-              {serviceStatusLabel(serviceStatus)}
+            <span className={ui.pill({ tone: serviceToneToPill(serviceState.tone) })}>
+              {serviceState.label}
             </span>
           </div>
           <div className="grid gap-3">
@@ -176,39 +176,15 @@ const TONE_TO_PILL = {
   ok: "success", running: "running", stale: "stale", error: "error",
 } as const;
 
-function serviceToneToPill(tone: ReturnType<typeof getServiceTone>) {
+function serviceToneToPill(tone: ReturnType<typeof getServiceState>["tone"]) {
   return (TONE_TO_PILL[tone as keyof typeof TONE_TO_PILL] ?? "default") as
     "success" | "running" | "stale" | "error" | "default";
 }
 
-function serviceStatusLabel(serviceStatus: ServiceStatus | null) {
-  if (!serviceStatus) {
-    return "Статус недоступен";
-  }
-  if (serviceStatus.status === "running") {
-    return "Идет обновление";
-  }
-  if (serviceStatus.isStale) {
-    return "Данные устарели";
-  }
-  if (serviceStatus.status === "ok") {
-    return "Все в порядке";
-  }
-  return "Есть ошибка";
-}
-
-function getServiceTone(serviceStatus: ServiceStatus | null) {
-  if (!serviceStatus) {
-    return "unknown";
-  }
-  if (serviceStatus.status === "running") {
-    return "running";
-  }
-  if (serviceStatus.isStale) {
-    return "stale";
-  }
-  if (serviceStatus.status === "ok") {
-    return "ok";
-  }
-  return "error";
+function getServiceState(serviceStatus: ServiceStatus | null) {
+  if (!serviceStatus)                      return { tone: "unknown", label: "Статус недоступен" } as const;
+  if (serviceStatus.status === "running")  return { tone: "running", label: "Идет обновление" } as const;
+  if (serviceStatus.isStale)               return { tone: "stale",   label: "Данные устарели" } as const;
+  if (serviceStatus.status === "ok")       return { tone: "ok",      label: "Все в порядке" } as const;
+  return { tone: "error", label: "Есть ошибка" } as const;
 }
