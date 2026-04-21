@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import { useAsyncEffect } from "@lib/useAsyncEffect";
 
@@ -36,11 +36,14 @@ export function DashboardPage() {
     }
   }, []);
 
-  const activeBots = bots.filter((bot) => bot.status?.includes("RUNNING"));
-  const bestPnlBot     = maxBy(activeBots, (b) => b.totalPnl);
-  const worstPnlBot    = minBy(activeBots, (b) => b.totalPnl);
-  const bestGridAprBot = maxBy(activeBots, (b) => b.gridApr);
-  const mostActiveBot  = maxBy(activeBots, (b) => b.activityCount);
+  const activeBots = useMemo(
+    () => bots.filter((bot) => bot.status?.includes("RUNNING")),
+    [bots]
+  );
+  const bestPnlBot     = useMemo(() => maxBy(activeBots, (b) => b.totalPnl), [activeBots]);
+  const worstPnlBot    = useMemo(() => minBy(activeBots, (b) => b.totalPnl), [activeBots]);
+  const bestGridAprBot = useMemo(() => maxBy(activeBots, (b) => b.gridApr), [activeBots]);
+  const mostActiveBot  = useMemo(() => maxBy(activeBots, (b) => b.activityCount), [activeBots]);
 
   if (isLoading) {
     return <section className={cn(ui.panel(), "px-8 py-7")}>Загрузка дашборда…</section>;
