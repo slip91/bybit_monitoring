@@ -58,9 +58,18 @@ export function PlanPage() {
     });
   }, [plan]);
 
-  const activeInPlan = participants.filter((p) => p.planCategory === 'active_in_plan' && !p.excludeFromPlan);
-  const activeOutsidePlan = participants.filter((p) => p.planCategory === 'active_out_of_plan' && !p.excludeFromPlan);
-  const excluded = participants.filter((p) => p.excludeFromPlan);
+  const activeInPlan = useMemo(
+    () => participants.filter((p) => p.planCategory === 'active_in_plan' && !p.excludeFromPlan),
+    [participants]
+  );
+  const activeOutsidePlan = useMemo(
+    () => participants.filter((p) => p.planCategory === 'active_out_of_plan' && !p.excludeFromPlan),
+    [participants]
+  );
+  const excluded = useMemo(
+    () => participants.filter((p) => p.excludeFromPlan),
+    [participants]
+  );
 
   async function toggleParticipant(botId: string) {
     const participant = participants.find((p) => p.botId === botId);

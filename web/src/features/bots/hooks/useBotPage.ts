@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { getBot, getBotMarketChart, getBotSnapshots } from "@lib/api";
@@ -65,23 +65,25 @@ export function useBotPage() {
   }, [botId, marketInterval, marketRange]);
 
   const opts = defaultOptions();
-  const aggregated = aggregateByTime(
-    snapshots,
-    (s) => new Date(s.snapshotTime).getTime(),
-    { ...opts, mode: aggregationMode },
+  const aggregated = useMemo(
+    () => aggregateByTime(snapshots, (s) => new Date(s.snapshotTime).getTime(), { ...opts, mode: aggregationMode }),
+    [snapshots, aggregationMode]
   );
-  const labels = aggregated.items.map((s) => formatBinLabel(Number(aggregated.labels[aggregated.items.indexOf(s)]), aggregationMode));
+  const labels = useMemo(
+    () => aggregated.items.map((s) => formatBinLabel(Number(aggregated.labels[aggregated.items.indexOf(s)]), aggregationMode)),
+    [aggregated, aggregationMode]
+  );
 
-  const activityDeltaSeries = aggregated.items.map((s, i) => {
+  const activityDeltaSeries = useMemo(() => aggregated.items.map((s, i) => {
     const prev = i > 0 ? aggregated.items[i - 1]?.activityCount ?? null : null;
     if (s.activityCount === null || prev === null) return null;
     return Math.max(0, s.activityCount - prev);
-  });
+  }), [aggregated]);
 
-  const annualizedGapSeries = aggregated.items.map((s) => {
+  const annualizedGapSeries = useMemo(() => aggregated.items.map((s) => {
     if (s.derivedAnnualizedTotalYieldRatio === null || s.gridApr === null) return null;
     return (s.derivedAnnualizedTotalYieldRatio - s.gridApr) * 100;
-  });
+  }), [aggregated]);
 
   const latest = bot?.latestSnapshot ?? null;
   const workRuntimeSec = bot?.workRuntimeSec ?? latest?.workRuntimeSec ?? null;
